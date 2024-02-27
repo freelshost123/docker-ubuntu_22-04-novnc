@@ -6,7 +6,7 @@ FROM ubuntu:22.04 as system
 
 # Avoid prompts for time zone
 ENV DEBIAN_FRONTEND noninteractive
-ENV TZ=Europe/Paris
+ENV TZ=America/Sao_Paulo
 # Fix issue with libGL on Windows
 ENV LIBGL_ALWAYS_INDIRECT=1
 
@@ -30,7 +30,7 @@ RUN apt-get update \
         lxde gtk2-engines-murrine gnome-themes-standard arc-theme
 
 
-RUN apt-get update && apt-get install -y python3 python3-tk gcc make cmake
+RUN apt-get update && apt-get install -y python3 python3-tk python3-pip gcc make cmake
 
 # tini to fix subreap
 ARG TINI_VERSION=v0.19.0
@@ -39,10 +39,6 @@ RUN wget https://github.com/krallin/tini/archive/v0.19.0.tar.gz \
  && export CFLAGS="-DPR_SET_CHILD_SUBREAPER=36 -DPR_GET_CHILD_SUBREAPER=37"; \
     cd tini-0.19.0; cmake . && make && make install \
  && cd ..; rm -r tini-0.19.0 v0.19.0.tar.gz
-
-
-# NextCloud
-RUN apt-get update && apt-get install -y nextcloud-desktop
 
 # Firefox with apt, not snap (which does not run in the container)
 COPY mozilla-firefox_aptprefs.txt /etc/apt/preferences.d/mozilla-firefox
