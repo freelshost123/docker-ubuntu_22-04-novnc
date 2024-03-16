@@ -2,7 +2,7 @@
 # base system
 ################################################################################
 
-FROM ubuntu:22.04 as system
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 as system
 
 # Avoid prompts for time zone
 ENV DEBIAN_FRONTEND noninteractive
@@ -82,7 +82,7 @@ RUN apt-get update \
 ################################################################################
 # builder
 ################################################################################
-FROM ubuntu:22.04 as builder
+FROM mcr.microsoft.com/devcontainers/base:ubuntu-22.04 as builder
 
 RUN apt-get update \
     && apt-get install -y curl ca-certificates gnupg
