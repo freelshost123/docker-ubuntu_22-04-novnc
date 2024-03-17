@@ -40,11 +40,6 @@ RUN wget https://github.com/krallin/tini/archive/v0.19.0.tar.gz \
     cd tini-0.19.0; cmake . && make && make install \
  && cd ..; rm -r tini-0.19.0 v0.19.0.tar.gz
 
-# Firefox with apt, not snap (which does not run in the container)
-COPY mozilla-firefox_aptprefs.txt /etc/apt/preferences.d/mozilla-firefox
-RUN add-apt-repository -y ppa:mozillateam/ppa
-RUN apt-get update && apt-get install -y --allow-downgrades firefox fonts-lyx
-
 # Chromium beta with apt, not snap (which does not run in the container)
 COPY chromium_aptprefs.txt /etc/apt/preferences.d/chromium
 RUN sudo add-apt-repository -y ppa:saiarcot895/chromium-beta
@@ -111,7 +106,6 @@ RUN apt autoremove && apt autoclean
 # merge
 ################################################################################
 FROM system
-LABEL maintainer="frederic.boulanger@centralesupelec.fr"
 
 COPY --from=builder /src/web/dist/ /usr/local/lib/web/frontend/
 COPY rootfs /
